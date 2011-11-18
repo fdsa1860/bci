@@ -16,7 +16,7 @@ for i=1:numPiece
     for j=1:numLabel
         u=data(1+(i-1)*pieceSize:i*pieceSize,1);
         v=template(:,j);
-        all_DF(j,i) = HankelAngle(u,v);
+        all_DF(j,i) = HankelAngle(u.',v.');
     end
 end
 [Y,I]=max(all_DF);

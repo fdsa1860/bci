@@ -14,14 +14,15 @@ end
 % else
 %     Hsize = (xLength+1)/2;
 % end
-% 
-% H1=hankel(x1(1:Hsize),x1(Hsize:end));
-% H2=hankel(x2(1:Hsize),x2(Hsize:end));
 
 order=10;
-H1=hankel(x1(1:end-order+1),x1(end-order+1:end));
-L=length(x1(1:end-order+1));
-H2=hankel(x2(1:L),x2(L:end));
+H1=hankel_mo(x1,[length(x1)-order+1,order]);
+H2=hankel_mo(x2,[length(x2)-order+1,order]);
+
+% order=10;
+% H1=hankel(x1(1:end-order+1),x1(end-order+1:end));
+% L=length(x1(1:end-order+1));
+% H2=hankel(x2(1:L),x2(L:end));
 
 H1=H1/norm(H1,'fro');
 H2=H2/norm(H2,'fro');
