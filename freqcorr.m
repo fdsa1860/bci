@@ -2,18 +2,13 @@
 clc;clear;close all;
 %% Read data
 % [ym,labels,data]=read_binary_data();   % read data and labels
-load bcidata_filter0125_htlsn14;
+load bcidata_filter0125_htlsn10;
 numLabels=numel(unique(labels));
-% % denoise
-% bandwidth = 0.125;
-% htlsn_order = 10;
-% ym = denoise(ym,true,bandwidth,true,htlsn_order);
-
 % sampling
 sampleRate = 1;
 [y,ym,dataLength]=sampleData(ym,sampleRate);
 
-[yy,yms]=sortdata(ym,labels);       % sort data according to labels
+% [yy,yms]=sortdata(ym,labels);       % sort data according to labels
 
 %% Cross Validation
 crossIdx=crossvalind('Kfold',size(ym,2),10);
@@ -24,7 +19,9 @@ for k=1:10
     ytrain=ym(:,crossIdx~=k);
     trainLabels=labels(:,crossIdx~=k);
     for i=1:numLabels
-        template(:,i)=mean(ytrain(:,trainLabels==i),2);
+        ytrainfft=real(fft(ytrain));
+%         ytrainfft=angle(fft(ytrain));
+        template(:,i)=mean(ytrainfft(:,trainLabels==i),2);
     end
     
     % Testing
@@ -32,7 +29,9 @@ for k=1:10
     testLabels=labels(crossIdx==k);
     lb=zeros(size(testLabels));
     for i=1:size(ytest,2)
-        d_all=sum((repmat(ytest(:,i),1,numLabels)-template).^2);
+        ytestfft=real(fft(ytest));
+%         ytestfft=angle(fft(ytest));
+        d_all=sum((repmat(ytestfft(:,i),1,numLabels)-template).^2);
         [Y,I]=min(d_all);
         lb(i)=I;
     end
@@ -64,7 +63,9 @@ yt=ytest(:);
 yt=[yt(ind+1:end);yt(1:ind)];
 ytest=reshape(yt,size(ym));
 for i=1:size(ytest,2)
-    d_all=sum((repmat(ytest(:,i),1,numLabels)-template).^2);
+    ytestfft=real(fft(ytest));
+%     ytestfft=angle(fft(ytest));
+    d_all=sum((repmat(ytestfft(:,i),1,numLabels)-template).^2);
     [Y,I]=min(d_all);
     lb(i)=I;
 end
