@@ -2,32 +2,8 @@
 % Attampt to use bags of word s to classify training data
 clc;clear;close all;
 % %% read data
-% [data,labels]=read_binary_data();   % read data and labels
-% labels=labels+1;            % convert labels 0 1 2 3 to labels 1 2 3 4
-% numLabels=numel(unique(labels));
-% [index channel_count]=size(data);
-% diffPulse=[0 ;diff(data(:,end))];   % get derivative of the data
-% IndNegOne = find(diffPulse==-1);    % get Indices of -1
-% IndPosOne = find(diffPulse==1);     % get Indices of 1
-% 
-% Ind=1:size(IndPosOne,1);            % get the indices of the starting point
-% Ind=reshape(Ind,14,numel(Ind)/14);
-% Ind=Ind(2:14,:);
-% istart=Ind(:);
-% StartPoints=IndPosOne(istart);
-% 
-% dataLength=266; % dataLength is 266, determined by hardware
-% ChSel=2;        % selected channel
-% 
-% %% data pre-processing
-% for j=1:size(StartPoints,1)
-%     y((j-1)*dataLength+1:j*dataLength,1)=data(StartPoints(j):StartPoints(j)+dataLength-1,ChSel);
-% end
-% ym=reshape(y,dataLength,numel(y)/dataLength);
-
-load bci_data_label
-ym=bci.data;
-labels=bci.label;
+% [ym,labels,data]=read_binary_data();   % read data and labels
+load bcidata_filter0125_htlsn14;
 numLabels=numel(unique(labels));
 
 % sampling
@@ -42,6 +18,7 @@ fprintf('data acquired...');
 
 %% generating feature pieces
 pieces='segment';
+% pieces = 'hankel';
 switch pieces
     case 'segment'
         % segment
@@ -57,7 +34,7 @@ switch pieces
 end
 
 %% cluster and label pieces
-numCluster=5;
+numCluster=3;
 [idx,C]=kmeans(ymspieces.',numCluster,'Options',statset('MaxIter',201));
 idxm=reshape(idx,size(idx,1)/numLabels,numLabels);
 

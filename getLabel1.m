@@ -2,7 +2,8 @@
 % Hankel Angle is utilized to classify training data
 clc;clear;close all;
 %% read data
-[ym,labels,data]=read_binary_data();   % read data and labels
+% [ym,labels,data]=read_binary_data();   % read data and labels
+load bcidata_filter0125_htlsn10;
 numLabels=numel(unique(labels));
 
 % % denoise 
@@ -62,11 +63,11 @@ for j=1:numLabels
 end
 precisionMat
 
-for ind=1:266
-ytest=data(ind+16662:ind+16662+266-1,2);
-d_all=sum((repmat(ytest,1,numLabels)-template).^2);
-[Y,I]=min(d_all);
-result(ind)=I;
-end
-result
-sum(result==3)
+% for ind=1:266
+% ytest=data(ind+16662:ind+16662+266-1,2);
+% d_all=sum((repmat(ytest,1,numLabels)-template).^2);
+% [Y,I]=min(d_all);
+% result(ind)=I;
+% end
+% result
+% sum(result==3)

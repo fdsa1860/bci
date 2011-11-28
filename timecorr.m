@@ -4,10 +4,10 @@ clc;clear;close all;
 % [ym,labels,data]=read_binary_data();   % read data and labels
 load bcidata_filter0125_htlsn14;
 numLabels=numel(unique(labels));
-% % denoise
-% bandwidth = 0.125;
+% denoise
+% bandwidth = 0.1;
 % htlsn_order = 10;
-% ym = denoise(ym,true,bandwidth,true,htlsn_order);
+% ym = denoise(ym,true,bandwidth,false,htlsn_order);
 
 % sampling
 sampleRate = 1;
