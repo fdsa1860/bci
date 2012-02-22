@@ -1,8 +1,8 @@
 % timecorr
 clc;clear;close all;
 %% Read data
-% [ym,labels,data]=read_binary_data();   % read data and labels
-load bcidata_filter0125_htlsn14;
+[ym,labels,data]=read_binary_data();   % read data and labels
+% load bcidata_filter0125_htlsn14;
 numLabels=numel(unique(labels));
 % denoise
 % bandwidth = 0.1;
@@ -58,7 +58,7 @@ precisionMat
 % end
 % result
 % sum(result==3)
-ind=4;
+ind=5;
 ytest=ym;
 yt=ytest(:);
 yt=[yt(ind+1:end);yt(1:ind)];

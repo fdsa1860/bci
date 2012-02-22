@@ -18,7 +18,7 @@ for k=1:10
     % Training
     ytrain=ym(:,crossIdx~=k);
     trainLabels=labels(:,crossIdx~=k);
-    ytrainfft=real(fft(ytrain));
+    ytrainfft=abs(fft(ytrain));
     %         ytrainfft=angle(fft(ytrain));
     for i=1:numLabels
         template(:,i)=mean(ytrainfft(:,trainLabels==i),2);
@@ -28,7 +28,7 @@ for k=1:10
     ytest=ym(:,crossIdx==k);
     testLabels=labels(crossIdx==k);
     lb=zeros(size(testLabels));
-    ytestfft=real(fft(ytest));
+    ytestfft=abs(fft(ytest));
     %         ytestfft=angle(fft(ytest));
     for i=1:size(ytest,2)
         d_all=sum((repmat(ytestfft(:,i),1,numLabels)-template).^2);
@@ -62,7 +62,7 @@ ytest=ym;
 yt=ytest(:);
 yt=[yt(ind+1:end);yt(1:ind)];
 ytest=reshape(yt,size(ym));
-ytestfft=real(fft(ytest));
+ytestfft=abs(fft(ytest));
     %     ytestfft=angle(fft(ytest));
 for i=1:size(ytest,2)    
     d_all=sum((repmat(ytestfft(:,i),1,numLabels)-template).^2);
