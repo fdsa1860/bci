@@ -1,6 +1,7 @@
 %%Parallel Port Initialization
-portNum=hex2dec(PortAddress);
-loadlibrary('inpout32','inpout32.h'); calllib('inpout32','Out32',portNum,0)
+% portNum=hex2dec(PortAddress);
+% loadlibrary('inpout32','inpout32.h'); calllib('inpout32','Out32',portNum,0)
+NumberofTrials=2;
 parallel1BitCode=1;
 %Parallel Port Initialization ends
 
@@ -153,4 +154,4 @@ parameters.F3 = F3;
 parameters.F4 = F4;
 parameters.p1 = p1;
 
-calllib('inpout32','Out32',portNum,0);
+% calllib('inpout32','Out32',portNum,0);

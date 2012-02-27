@@ -32,19 +32,19 @@ Screen('DrawTexture',win,fixation_image_texture,srcRect,dstRect,0,0);
 Screen('DrawTexture',win,stimulus_onset_indicator(1),[0 0 20 20],dstRect_nontarget,0,0);
 % [vbl StimulusOnsetTime FlipTimestamp Missed Beampos] = Screen('Flip', win, 0,0);
 [vbl] = Screen('Flip', win, 0,0);
-calllib('inpout32','Out32',portNum,parallel1BitCode);
+% calllib('inpout32','Out32',portNum,parallel1BitCode);
 
 flip_duration_fixation = 1;
 Screen('DrawTexture',win,fixation_image_texture,srcRect,dstRect,0,0);
 Screen('DrawTexture',win,stimulus_onset_indicator(2),[0 0 20 20],dstRect_nontarget,0,0);
 [vbl] = Screen('Flip', win, vbl + flip_duration_fixation-0.5*ifi,0,0 );
-calllib('inpout32','Out32',portNum,0);
+% calllib('inpout32','Out32',portNum,0);
 
 
 % added  to increase the black time between the fixation and the start of the sequences to prevent missing the start
 Screen('FillRect',win,[0 0 0]); % Setting the background to black.
 Screen('Flip', win, 0, 1, 0, 0);
-calllib('inpout32','Out32',portNum,0);
+% calllib('inpout32','Out32',portNum,0);
 %
 
 % centerhorizental = winRect(3) / 2;
@@ -203,14 +203,14 @@ while (~KbCheck)
     if(indicator_flag)
             Screen('Flip', win, 0, 1, 0, 0);
 
-        calllib('inpout32','Out32',portNum,parallel1BitCode);
+%         calllib('inpout32','Out32',portNum,parallel1BitCode);
     else
             Screen('Flip', win, 0, 1, 0, 0);
 
-        calllib('inpout32','Out32',portNum,0);
+%         calllib('inpout32','Out32',portNum,0);
     end
     %             toc
 end
 Screen('FillRect',win,[0 0 0]); % Setting the background to black.
 Screen('Flip', win, 0, 1, 0, 0);
-calllib('inpout32','Out32',portNum,0);
+% calllib('inpout32','Out32',portNum,0);
