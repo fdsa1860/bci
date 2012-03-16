@@ -23,24 +23,28 @@ fprintf('data acquired...');
 norm_used=inf;
 % epsilon=7;
 order=3;
-for epsilon=7
-    fprintf('order=%d\n',order);
-%     group=indep_dyn_switch_detect(yh(1600:1700),norm_used,epsilon,order);
-%      [x group]=indep_dyn_switch_detect1(data(16662:16662+1000,2),norm_used,epsilon,order);
-     [x group]=indep_dyn_switch_detect1(data(24231:25094+266,2),norm_used,epsilon,order);
-%     [x group] = indep_dyn_switch_detect_offset(ymean(1:532,1),norm_used,epsilon,order);
-%     group=l1_switch_detect(yh,norm_used,epsilon);
-%     group = multidim_dyn_switch_detect(yh,norm_used,epsilon,order);
- 
-    if ~isempty(group)
-        fprintf('The number of groups=%d\n',numel(group));
-        if numel(group)>20
-            continue;
-        else
-        break;
+% for i=1:20
+    for epsilon=1.2:0.1:3
+        fprintf('order=%d\n',order);
+        [p_est group]=indep_dyn_switch_detect(mean(yms(:,1+3*65:65+3*65),2),norm_used,epsilon,order);
+        %      [x group]=indep_dyn_switch_detect1(data(16662:16662+1000,2),norm_used,epsilon,order);
+        %      [x group]=indep_dyn_switch_detect1(data(24231:25094+266,2),norm_used,epsilon,order);
+        %     [x group] = indep_dyn_switch_detect_offset(ymean(1:532,1),norm_used,epsilon,order);
+        %     group=l1_switch_detect(data(16662:16662+1000,2),norm_used,epsilon);
+        %     group = multidim_dyn_switch_detect(yh,norm_used,epsilon,order);
+        
+        if ~isempty(group)
+            fprintf('The number of groups=%d\n',numel(unique(group)));
+            if numel(unique(group))>1
+                continue;
+            else
+%                 para(:,i)=p_est(1:3);
+                break;
+            end
         end
     end
-end
+%     close all;
+% end
 % num_order=8;
 % for i=1:num_order
 %     p(:,i)=x(i:num_order:end,:);

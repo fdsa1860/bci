@@ -44,6 +44,7 @@ for k = 1:100
     subject to
     z >= max(c)';
     norm(A*x_log - rhs,norm_used) <= epsilon;
+%     A*x_log - rhs <= epsilon;
     cvx_end
     
     if ~isempty(findstr(cvx_status,'Failed'))

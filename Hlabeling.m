@@ -1,11 +1,12 @@
 function [lb all_DF]=Hlabeling(data,template,numLabel)
-% inputs:
+% Inputs:
 % data: 266 x 1 input
 % template: PieceSize x 4
 % Outputs:
 % DF: Final decistion label
 % all_DF: all labels
 
+global wow;
 % pieceSize = size(template,1);
 pieceSize = size(data,1);
 numPiece=floor(size(data,1)/pieceSize);
@@ -16,7 +17,7 @@ for i=1:numPiece
     for j=1:numLabel
         u=data(1+(i-1)*pieceSize:i*pieceSize,1);
         v=template(:,j);
-        all_DF(j,i) = HankelAngle(u.',v.');
+        all_DF(j,i) = HankelAngle(u.',v.',wow);
     end
 end
 [Y,I]=max(all_DF);
