@@ -40,32 +40,32 @@ for k=1:10
     TTlabels=[TTlabels lb];
 end
 
-%% Display results
-[GRlabels;TTlabels]
-precisionMat=zeros(numLabels);
-for j=1:numLabels
-    for i=1:numLabels
-        precisionMat(i,j)=nnz(TTlabels(GRlabels==j)==i)/nnz(GRlabels==j);
-    end
-end
-precisionMat
-
-% for ind=1:266
-% ytest=data(ind+16662:ind+16662+266-1,2);
-% d_all=sum((repmat(ytest,1,numLabels)-template).^2);
-% [Y,I]=min(d_all);
-% result(ind)=I;
+% %% Display results
+% [GRlabels;TTlabels]
+% precisionMat=zeros(numLabels);
+% for j=1:numLabels
+%     for i=1:numLabels
+%         precisionMat(i,j)=nnz(TTlabels(GRlabels==j)==i)/nnz(GRlabels==j);
+%     end
 % end
-% result
-% sum(result==3)
-ind=5;
-ytest=ym;
-yt=ytest(:);
-yt=[yt(ind+1:end);yt(1:ind)];
-ytest=reshape(yt,size(ym));
-for i=1:size(ytest,2)
-    d_all=sum((repmat(ytest(:,i),1,numLabels)-template).^2);
-    [Y,I]=min(d_all);
-    lb(i)=I;
-end
-sum(lb==labels)/260
+% precisionMat
+% 
+% % for ind=1:266
+% % ytest=data(ind+16662:ind+16662+266-1,2);
+% % d_all=sum((repmat(ytest,1,numLabels)-template).^2);
+% % [Y,I]=min(d_all);
+% % result(ind)=I;
+% % end
+% % result
+% % sum(result==3)
+% ind=5;
+% ytest=ym;
+% yt=ytest(:);
+% yt=[yt(ind+1:end);yt(1:ind)];
+% ytest=reshape(yt,size(ym));
+% for i=1:size(ytest,2)
+%     d_all=sum((repmat(ytest(:,i),1,numLabels)-template).^2);
+%     [Y,I]=min(d_all);
+%     lb(i)=I;
+% end
+% sum(lb==labels)/260
