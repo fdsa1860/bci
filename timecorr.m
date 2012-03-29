@@ -9,12 +9,30 @@ numLabels=numel(unique(labels));
 % htlsn_order = 10;
 % ym = denoise(ym,true,bandwidth,false,htlsn_order);
 
-% sampling
-sampleRate = 1;
-[y,ym,dataLength]=sampleData(ym,sampleRate);
+load bcidata_lowpass_35Hz;
+load bcidata_lowpass_35Hz_SRPCA_7_100000;
+load bcidata_lowpass_35Hz_SRPCA_7_100000_HSTLN_10;
 
-[yy,yms]=sortdata(ym,labels);       % sort data according to labels
+FILTER_EN=0;
 
+if FILTER_EN==1
+    B=25;
+    F=ones(size(ym,1),1);
+    F(1+B:length(F)-B)=0;
+    for i=1:size(ym,2)
+        Y(:,i)=fft(ym(:,i)).*F;
+        ymF(:,i)=real(ifft(Y(:,i)));    % not a good filter
+        %     plot(abs(fftshift(fft(ymF(:,i)))),'b');
+    end
+%     keyboard;
+end
+% % sampling
+% sampleRate = 1;
+% [y,ym,dataLength]=sampleData(ym,sampleRate);
+
+% [yy,yms]=sortdata(ym,labels);       % sort data according to labels
+
+ym=ym;
 %% Cross Validation
 crossIdx=crossvalind('Kfold',size(ym,2),10);
 GRlabels=[];
@@ -25,6 +43,11 @@ for k=1:10
     trainLabels=labels(:,crossIdx~=k);
     for i=1:numLabels
         template(:,i)=mean(ytrain(:,trainLabels==i),2);
+%         template1=mean(ytrain(:,trainLabels==i),2);
+%         template(:,i)=SRPCA_e1_e2_clean(template1,5,100000,ones(size(ym,1),1));
+%         figure(1);
+%         plot(template1,'r');hold on;   plot(template(:,i),'b'); hold off;
+%         pause;
     end
     
     % Testing
@@ -40,15 +63,16 @@ for k=1:10
     TTlabels=[TTlabels lb];
 end
 
-% %% Display results
-% [GRlabels;TTlabels]
-% precisionMat=zeros(numLabels);
-% for j=1:numLabels
-%     for i=1:numLabels
-%         precisionMat(i,j)=nnz(TTlabels(GRlabels==j)==i)/nnz(GRlabels==j);
-%     end
-% end
-% precisionMat
+%% Display results
+[GRlabels;TTlabels]
+precisionMat=zeros(numLabels);
+for j=1:numLabels
+    for i=1:numLabels
+        precisionMat(i,j)=nnz(TTlabels(GRlabels==j)==i)/nnz(GRlabels==j);
+    end
+end
+precisionMat
+trace(precisionMat)/4
 % 
 % % for ind=1:266
 % % ytest=data(ind+16662:ind+16662+266-1,2);

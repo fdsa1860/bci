@@ -1,9 +1,12 @@
-function [ym labels data]=read_binary_data(str)
+function [ym labels data]=read_binary_data(ChSel,str)
 %This function reads binary data recorded from gtec amplifier using Labview
 %str is the address of the file to be read
 %Umut Orhan
 
 if(nargin==0)    
+    ChSel=2;
+    str='20110524_1910__ExperimentDescription.dat';
+elseif(nargin==1)
     str='20110524_1910__ExperimentDescription.dat';
 end
 aa = dir('.\data');
@@ -40,7 +43,6 @@ istart=Ind(:);
 StartPoints=IndPosOne(istart);
 
 dataLength=266; % dataLength is 266, determined by hardware
-ChSel=2;        % selected channel
 
 %% data pre-processing
 for j=1:size(StartPoints,1)
