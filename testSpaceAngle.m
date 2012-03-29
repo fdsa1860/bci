@@ -10,25 +10,6 @@ clc;clear;close all;
 % load bcidata_0315_SRPCA_HSTLN_manually_selected.mat;
 % load bcidata_SRPCA0315_5_1000_first26data;
 
-% load bcidata_0321_SRPCA_5dot5_100000;
-% load bcidata_0321_SRPCA_5dot5_100000_HSTLN_10;
-% load bcidata_0322_SRPCA_7_100000_err;
-% load bcidata_0322_SRPCA_7_100000_HSTLN_10_err;
-% ymR(:,eInd)=ymR_corr;
-% ymH(:,eInd)=ymH_corr;
-
-% load bcidata_SRPCA_7and5dot5_100000;
-% load bcidata_SRPCA_7and5dot5_100000_HSTLN_10;
-
-% load bcidata_SRPCA_7and5dot5_100000_HSTLN_10_PrecisionMat;
-% load bcidata_L25_R5_H10_PrecisionMat;
-% a=P(1,1,:)+P(2,2,:)+P(3,3,:)+P(4,4,:);
-% max(a)
-% for i=1:size(P,3)
-%     P(:,:,i)
-%     pause;
-% end
-% keyboard;
 % load bcidata_lowpass_25Hz;
 % load bcidata_lowpass_25Hz_SRPCA_5_100000;
 % load bcidata_lowpass_25Hz_SRPCA_5_100000_HSTLN_10;
@@ -44,7 +25,7 @@ HSTLN_EN=0;     %enable or disable HSTLN order reduction
 % for i=1:size(ym,2)
 %     figure(1);
 %     plot(ym(:,i),'r');
-%     hold on;   
+%     hold on;
 % %     plot(real(ymF(:,i)),'k');
 %     plot(ymR(:,i),'b');
 %     plot(ymH(:,i),'g');
@@ -67,36 +48,28 @@ if FILTER_EN==1
     for i=1:size(ym,2)
         Y(:,i)=fft(ym(:,i)).*F;
         ymF(:,i)=real(ifft(Y(:,i)));    % not a good filter
-        plot(ym(:,i),'r');hold on;
-%         plot(abs(fftshift(fft(ymF(:,i)))),'b');
-        plot(real(ymF(:,i)),'k');
-        hold off;
+%         figure(1);
+%         plot(ym(:,i),'r');hold on;        
+%         plot(real(ymF(:,i)),'k');
+%         hold off;
+%         figure(2);
+%         plot(abs(fftshift(fft(ym(:,i)))),'r');
+%         hold on;
+%         plot(abs(fftshift(fft(ymF(:,i)))),'k');
+%         hold off;
 %         pause;
     end
-%     keyboard;
+    %     keyboard;
 end
+%% Select only the good data
 if SEL_EN
     Ind=ones(size(ymF,2),1);
     parfor i=1:size(ymF,2)
         if norm(ymF(:,i),inf)>50
-            Ind(i)=0;            
-        end      
+            Ind(i)=0;
+        end
     end
 end
-
-% for i=1:size(ymF,2)
-%     if Ind(i)==1
-%         plot(ym(:,i),'r');hold on;
-% %         plot(abs(fftshift(fft(ymF(:,i)))),'b');
-%         plot(real(ymF(:,i)),'k');
-%         hold off;
-% %           pause;
-%     end
-% 
-% end
-% keyboard;
-% ymI=ym(:,logical(Ind));
-% labels=labels(logical(Ind));
 
 %% SRPCA
 if SRPCA_EN==1
@@ -122,14 +95,14 @@ if SRPCA_EN==1
     % save bcidata_0322_SRPCA_7_100000_errData ymR errlabels;
     % keyboard;
     save bcidata_0328_lowpass_25Hz_SRPCA_5_100000_dat4 ymR labels;
-    % % ym = ymR;
+end
+load bcidata_0328_lowpass_25Hz_SRPCA_5_100000_dat4;
     
     % ymR(:,1)=SRPCA_e1_e2_clean(ym(:,1),4.34,100000,ones(size(x)));
     % ymR(:,2)=SRPCA_e1_e2_clean(ym(:,2),4.34,100000,ones(size(x)));
     % ymR(:,3)=SRPCA_e1_e2_clean(ym(:,3),5,100000,ones(size(x)));
     % ymR(:,14)=SRPCA_e1_e2_clean(ym(:,14),5,100000,ones(size(x)));
-end
-load bcidata_0328_lowpass_25Hz_SRPCA_5_100000_dat4;
+
 
 %% denoise, order reduction
 if HSTLN_EN==1
@@ -146,83 +119,106 @@ if HSTLN_EN==1
     end
     save bcidata_0328_lowpass_25_SRPCA_5_100000_HSTLN_10_dat4 ymH labels;
     % keyboard;
+end
+load  bcidata_0328_lowpass_25_SRPCA_5_100000_HSTLN_10_dat4;
     % %%
     % % yH1 = hstln_mo(ymR(:,1)',10)';
     % % yH2 = hstln_mo(ymR(:,2)',10)';
     % % yH3 = hstln_mo(ymR(:,3)',10)';
     % % yH4 = hstln_mo(ymR(:,14)',10)';
-end
-load  bcidata_0328_lowpass_25_SRPCA_5_100000_HSTLN_10_dat4;
-% labels=labels1;
-% %% mask out bad data
+
+
+
+%% mask out bad data
 mask=Ind;
 ym=ym(:,mask==1);
+ymF=ymF(:,mask==1);
 ymR=ymR(:,mask==1);
 ymH=ymH(:,mask==1);
 labels=labels(:,mask==1);
 
-% % load bcidata_0315_SRPCA_HSTLN_first26data;
+%% plot data
+% for i=1:size(ym,2)
+%     figure(1);
+%     plot(ym(:,i),'r');
+%     hold on;
+% %     plot(real(ymF(:,i)),'k');
+%     plot(ymR(:,i),'b');
+%     plot(ymH(:,i),'g');
+%     fprintf('i=%d,label=%d\n',i,labels(i));
+%     hold off;
+%     pause;
+% end
+
 % ym=ymH;
 fprintf('data acquired\n');
 
 % for k=1:13
 % for j=12:233
 
-    x1=ymH(:,labels==1);
-    U1=[];
-    for k=1:size(x1,2)
-        H1=hankel_mo(x1(:,k)',[7*size(x1(:,k),2),size(x1,1)-7+1])';
-        [U,S,V]=svd(H1);
-        U1=[U1 U(:,1:7)];
-    end
-%     [U11,S,V]=svd(U1);
-    plot(svd(U1),'*');
+x1=ymF(:,labels==1);
+U1=[];
+for k=1:size(x1,2)
+    H1=hankel_mo(x1(:,k)',[7*size(x1(:,k),2),size(x1,1)-7+1])';
+    [U,S,V]=svd(H1);
+    U1=[U1 U(:,1:7)];
+end
+[U11,S,V]=svd(U1);
+plot(svd(U1),'*');
 %     U1=U11(:,1:40);
 %     plot(svd(U1),'*');
 %
-    x2=ymH(:,labels==2);
-%     save dat328 x1 x2;
-    U2=[];
-    for k=1:size(x2,2)
-        H2=hankel_mo(x2(:,k)',[7*size(x2(:,k),2),size(x2,1)-7+1])';
-        [U,S,V]=svd(H2);
-        U2=[U2 U(:,1:7)];
-    end
-%     [U21,S,V]=svd(U2);
-    plot(svd(U2),'*');
+x2=ymF(:,labels==2);
+U2=[];
+for k=1:size(x2,2)
+    H2=hankel_mo(x2(:,k)',[7*size(x2(:,k),2),size(x2,1)-7+1])';
+    [U,S,V]=svd(H2);
+    U2=[U2 U(:,1:7)];
+end
+[U21,S,V]=svd(U2);
+plot(svd(U2),'*');
 %     U2=U21(:,1:40);
-    
-    x3=ymH(:,labels==3);
+
+x3=ymF(:,labels==3);
 %     save dat328 x1 x2;
-    U3=[];
-    for k=1:size(x3,2)
-        H3=hankel_mo(x3(:,k)',[7*size(x3(:,k),2),size(x3,1)-7+1])';
-        [U,S,V]=svd(H3);
-        U3=[U3 U(:,1:7)];
-    end
-%     [U31,S,V]=svd(U3);
-    plot(svd(U3),'*');
+U3=[];
+for k=1:size(x3,2)
+    H3=hankel_mo(x3(:,k)',[7*size(x3(:,k),2),size(x3,1)-7+1])';
+    [U,S,V]=svd(H3);
+    U3=[U3 U(:,1:7)];
+end
+[U31,S31,V]=svd(U3);
+plot(svd(U3),'*');
 %     U3=U31(:,1:40);
-    
-    x4=ymH(:,labels==4);
+
+x4=ymF(:,labels==4);
 %     save dat328 x1 x2;
-    U4=[];
-    for k=1:size(x4,2)
-        H4=hankel_mo(x4(:,k)',[7*size(x4(:,k),2),size(x4,1)-7+1])';
-        [U,S,V]=svd(H4);
-        U4=[U4 U(:,1:7)];
-    end
-%     [U41,S,V]=svd(U4);
-    plot(svd(U4),'*');
+U4=[];
+for k=1:size(x4,2)
+    H4=hankel_mo(x4(:,k)',[7*size(x4(:,k),2),size(x4,1)-7+1])';
+    [U,S,V]=svd(H4);
+    U4=[U4 U(:,1:7)];
+end
+[U41,S41,V]=svd(U4);
+plot(svd(U4),'*');
 %     U4=U41(:,1:40);
-    
-    angle12=subspace(U1,U2)
-    angle13=subspace(U1,U3)
-    angle14=subspace(U1,U4)
-    angle23=subspace(U2,U3)
-    angle24=subspace(U2,U4)
-    angle34=subspace(U3,U4)
-    keyboard;
+
+angle12=subspace(U1,U2)
+angle13=subspace(U1,U3)
+angle14=subspace(U1,U4)
+angle23=subspace(U2,U3)
+angle24=subspace(U2,U4)
+angle34=subspace(U3,U4)
+for h1=1:40
+    for h2=1:40
+        hh(h1,h2)=h1+h2-getHankelRank([U31(:,1:h1) U21(:,1:h2)]);
+        hh1(h1,h2)=min(h1,h2);
+    end
+end
+hh2=hh-hh1;
+[~,ind_hh2]=min(hh2(:));
+[indr,indc]=ind2sub(size(hh2),ind_hh2)
+%     keyboard;
 
 %     for i=2:2
 %
@@ -260,13 +256,13 @@ fprintf('data acquired\n');
 %% Cross Validation
 
 crossIdx=crossvalind('Kfold',size(ym,2),10);
-order = 7;
+order = 10;
 HCount = 1;
-HsizeRange = 7:7;
+HsizeRange = 10:133;
 for Hsize=HsizeRange
     clear H U;
     for n=1:size(ym,2)
-        H(:,:,n)=hankel_mo(ymF(:,n)',[Hsize,size(ym(:,n),1)-Hsize+1]);
+        H(:,:,n)=hankel_mo(ymH(:,n)',[Hsize,size(ym(:,n),1)-Hsize+1])';
         [U1,S1,V1]=svd(H(:,:,n));
         U(:,:,n)=U1(:,1:order);
     end
@@ -282,6 +278,36 @@ for Hsize=HsizeRange
         %         ytrain=ym(:,crossIdx~=k);
         Utrain=U(:,:,crossIdx~=k);
         trainLabels=labels(:,crossIdx~=k);
+        Un1=[];
+        Un2=[];
+        Un3=[];
+        Un4=[];
+        for i=1:size(Utrain,3)
+            switch trainLabels(i)
+                case 1
+                    Un1=[Un1 Utrain(:,:,i)];
+                    
+                case 2
+                    Un2=[Un2 Utrain(:,:,i)];
+                    
+                case 3
+                    Un3=[Un3 Utrain(:,:,i)];
+                    
+                case 4
+                    Un4=[Un4 Utrain(:,:,i)];
+                    
+                otherwise
+                    fprintf('error\n');
+            end
+        end
+        [Up1 Sp1 Vp1]=svd(Un1);
+        Uq1=Up1(:,1:22);
+        [Up2 Sp2 Vp2]=svd(Un2);
+        Uq2=Up2(:,1:22);
+        [Up3 Sp3 Vp3]=svd(Un3);
+        Uq3=Up3(:,1:22);
+        [Up4 Sp4 Vp4]=svd(Un4);
+        Uq4=Up4(:,1:22);
         %     parfor i=1:numLabels
         %         template(:,i)=mean(ytrain(:,trainLabels==i),2);
         %     end
@@ -298,14 +324,18 @@ for Hsize=HsizeRange
             %             i,size(Utest,3));
             Ut=Utest(:,:,i);
             L=size(Utrain,3);
-            parfor j=1:L
-                angles(j)=subspace(Ut,Utrain(:,:,j));
-            end
-            all_lb=[sum(angles(trainLabels==1))/sum(trainLabels==1)...
-                sum(angles(trainLabels==2))/sum(trainLabels==2)...
-                sum(angles(trainLabels==3))/sum(trainLabels==3)...
-                sum(angles(trainLabels==4))/sum(trainLabels==4)];
-            [Y,lb(i)]=min(all_lb);
+            
+%             angles(1)=subspace(Ut,Uq1);
+%             angles(2)=subspace(Ut,Uq2);
+%             angles(3)=subspace(Ut,Uq3);
+%             angles(4)=subspace(Ut,Uq4);
+%             [Y,lb(i)]=min(angles);
+            
+            %             all_lb=[sum(angles(trainLabels==1))/sum(trainLabels==1)...
+            %                 sum(angles(trainLabels==2))/sum(trainLabels==2)...
+            %                 sum(angles(trainLabels==3))/sum(trainLabels==3)...
+            %                 sum(angles(trainLabels==4))/sum(trainLabels==4)];
+            %             [Y,lb(i)]=min(all_lb);
         end
         GRlabels=[GRlabels testLabels];
         TTlabels=[TTlabels lb];
@@ -322,7 +352,7 @@ for Hsize=HsizeRange
     P(:,:,HCount)=precisionMat;
     HCount=HCount+1;
 end
-save bcidata_0328_L25_R5_H10__dat4_PrecisionMat P H U order HsizeRange;
+% save bcidata_0328_L25_R5_H10__dat4_PrecisionMat P H U order HsizeRange;
 
 % for ind=1:266
 % ytest=data(ind+16662:ind+16662+266-1,2);
