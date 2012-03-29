@@ -168,24 +168,61 @@ fprintf('data acquired\n');
 % for k=1:13
 % for j=12:233
 
-%     x1=ymH(:,labels==3);
-%     U1=[];
-%     for k=1:size(x1,2)
-%         H1=hankel_mo(x1(:,k)',[j*size(x1(:,k),2),size(x1,1)-j+1])';
-%         [U,S,V]=svd(H1);
-%         U1=[U1 U(:,1:10)];
-%     end
+    x1=ymH(:,labels==1);
+    U1=[];
+    for k=1:size(x1,2)
+        H1=hankel_mo(x1(:,k)',[7*size(x1(:,k),2),size(x1,1)-7+1])';
+        [U,S,V]=svd(H1);
+        U1=[U1 U(:,1:7)];
+    end
+%     [U11,S,V]=svd(U1);
+    plot(svd(U1),'*');
+%     U1=U11(:,1:40);
 %     plot(svd(U1),'*');
 %
-%     x2=ymH(:,labels==2);
-%     U2=[];
-%     for k=1:size(x2,2)
-%         H2=hankel_mo(x2(:,k)',[j*size(x2(:,k),2),size(x2,1)-j+1])';
-%         [U,S,V]=svd(H2);
-%         U2=[U2 U(:,1:10)];
-%     end
-%     plot(svd(U2),'*');
-%     angle23(j)=subspace(U1,U2);
+    x2=ymH(:,labels==2);
+%     save dat328 x1 x2;
+    U2=[];
+    for k=1:size(x2,2)
+        H2=hankel_mo(x2(:,k)',[7*size(x2(:,k),2),size(x2,1)-7+1])';
+        [U,S,V]=svd(H2);
+        U2=[U2 U(:,1:7)];
+    end
+%     [U21,S,V]=svd(U2);
+    plot(svd(U2),'*');
+%     U2=U21(:,1:40);
+    
+    x3=ymH(:,labels==3);
+%     save dat328 x1 x2;
+    U3=[];
+    for k=1:size(x3,2)
+        H3=hankel_mo(x3(:,k)',[7*size(x3(:,k),2),size(x3,1)-7+1])';
+        [U,S,V]=svd(H3);
+        U3=[U3 U(:,1:7)];
+    end
+%     [U31,S,V]=svd(U3);
+    plot(svd(U3),'*');
+%     U3=U31(:,1:40);
+    
+    x4=ymH(:,labels==4);
+%     save dat328 x1 x2;
+    U4=[];
+    for k=1:size(x4,2)
+        H4=hankel_mo(x4(:,k)',[7*size(x4(:,k),2),size(x4,1)-7+1])';
+        [U,S,V]=svd(H4);
+        U4=[U4 U(:,1:7)];
+    end
+%     [U41,S,V]=svd(U4);
+    plot(svd(U4),'*');
+%     U4=U41(:,1:40);
+    
+    angle12=subspace(U1,U2)
+    angle13=subspace(U1,U3)
+    angle14=subspace(U1,U4)
+    angle23=subspace(U2,U3)
+    angle24=subspace(U2,U4)
+    angle34=subspace(U3,U4)
+    keyboard;
 
 %     for i=2:2
 %
@@ -225,7 +262,7 @@ fprintf('data acquired\n');
 crossIdx=crossvalind('Kfold',size(ym,2),10);
 order = 7;
 HCount = 1;
-HsizeRange = 20:20;
+HsizeRange = 7:7;
 for Hsize=HsizeRange
     clear H U;
     for n=1:size(ym,2)
