@@ -158,10 +158,12 @@ fprintf('data acquired\n');
 
 x1=ymF(:,labels==1);
 U1=[];
+H11=[];
 for k=1:size(x1,2)
-    H1=hankel_mo(x1(:,k)',[7*size(x1(:,k),2),size(x1,1)-7+1])';
+    H1=hankel_mo(x1(:,k)',[133*size(x1(:,k),2),size(x1,1)-133+1])';
     [U,S,V]=svd(H1);
-    U1=[U1 U(:,1:7)];
+    U1=[U1 U(:,1:20)];
+    H11=[H11 H1];
 end
 [U11,S,V]=svd(U1);
 plot(svd(U1),'*');
@@ -170,10 +172,12 @@ plot(svd(U1),'*');
 %
 x2=ymF(:,labels==2);
 U2=[];
+H21=[];
 for k=1:size(x2,2)
-    H2=hankel_mo(x2(:,k)',[7*size(x2(:,k),2),size(x2,1)-7+1])';
+    H2=hankel_mo(x2(:,k)',[133*size(x2(:,k),2),size(x2,1)-133+1])';
     [U,S,V]=svd(H2);
-    U2=[U2 U(:,1:7)];
+    U2=[U2 U(:,1:20)];
+    H21=[H21 H2];
 end
 [U21,S,V]=svd(U2);
 plot(svd(U2),'*');
@@ -182,10 +186,12 @@ plot(svd(U2),'*');
 x3=ymF(:,labels==3);
 %     save dat328 x1 x2;
 U3=[];
+H31=[];
 for k=1:size(x3,2)
-    H3=hankel_mo(x3(:,k)',[7*size(x3(:,k),2),size(x3,1)-7+1])';
+    H3=hankel_mo(x3(:,k)',[133*size(x3(:,k),2),size(x3,1)-133+1])';
     [U,S,V]=svd(H3);
-    U3=[U3 U(:,1:7)];
+    U3=[U3 U(:,1:20)];
+    H31=[H31 H3];
 end
 [U31,S31,V]=svd(U3);
 plot(svd(U3),'*');
@@ -195,9 +201,9 @@ x4=ymF(:,labels==4);
 %     save dat328 x1 x2;
 U4=[];
 for k=1:size(x4,2)
-    H4=hankel_mo(x4(:,k)',[7*size(x4(:,k),2),size(x4,1)-7+1])';
+    H4=hankel_mo(x4(:,k)',[133*size(x4(:,k),2),size(x4,1)-133+1])';
     [U,S,V]=svd(H4);
-    U4=[U4 U(:,1:7)];
+    U4=[U4 U(:,1:20)];
 end
 [U41,S41,V]=svd(U4);
 plot(svd(U4),'*');
@@ -256,13 +262,13 @@ hh2=hh-hh1;
 %% Cross Validation
 
 crossIdx=crossvalind('Kfold',size(ym,2),10);
-order = 10;
+order = 26;
 HCount = 1;
-HsizeRange = 10:133;
+HsizeRange = 133:133;
 for Hsize=HsizeRange
     clear H U;
     for n=1:size(ym,2)
-        H(:,:,n)=hankel_mo(ymH(:,n)',[Hsize,size(ym(:,n),1)-Hsize+1])';
+        H(:,:,n)=hankel_mo(ymF(:,n)',[Hsize,size(ym(:,n),1)-Hsize+1])';
         [U1,S1,V1]=svd(H(:,:,n));
         U(:,:,n)=U1(:,1:order);
     end

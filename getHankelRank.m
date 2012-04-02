@@ -1,7 +1,7 @@
 % get hankel rank
 function y= getHankelRank(H)
 
-thr=0.9;
+thr=0.98;
 y=0;
 s=svd(H);
 Tr=sum(s);
