@@ -162,7 +162,7 @@ H11=[];
 for k=1:size(x1,2)
     H1=hankel_mo(x1(:,k)',[133*size(x1(:,k),2),size(x1,1)-133+1])';
     [U,S,V]=svd(H1);
-    U1=[U1 U(:,1:20)];
+    U1=[U1 U(:,1:24)];
     H11=[H11 H1];
 end
 [U11,S,V]=svd(U1);
@@ -176,7 +176,7 @@ H21=[];
 for k=1:size(x2,2)
     H2=hankel_mo(x2(:,k)',[133*size(x2(:,k),2),size(x2,1)-133+1])';
     [U,S,V]=svd(H2);
-    U2=[U2 U(:,1:20)];
+    U2=[U2 U(:,1:24)];
     H21=[H21 H2];
 end
 [U21,S,V]=svd(U2);
@@ -190,7 +190,7 @@ H31=[];
 for k=1:size(x3,2)
     H3=hankel_mo(x3(:,k)',[133*size(x3(:,k),2),size(x3,1)-133+1])';
     [U,S,V]=svd(H3);
-    U3=[U3 U(:,1:20)];
+    U3=[U3 U(:,1:24)];
     H31=[H31 H3];
 end
 [U31,S31,V]=svd(U3);
@@ -203,7 +203,7 @@ U4=[];
 for k=1:size(x4,2)
     H4=hankel_mo(x4(:,k)',[133*size(x4(:,k),2),size(x4,1)-133+1])';
     [U,S,V]=svd(H4);
-    U4=[U4 U(:,1:20)];
+    U4=[U4 U(:,1:24)];
 end
 [U41,S41,V]=svd(U4);
 plot(svd(U4),'*');
