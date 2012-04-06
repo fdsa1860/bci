@@ -135,20 +135,26 @@ ym=ym(:,mask==1);
 ymF=ymF(:,mask==1);
 ymR=ymR(:,mask==1);
 ymH=ymH(:,mask==1);
+ymY=abs(Y(:,mask==1));
 labels=labels(:,mask==1);
+z1=ymY(:,labels==1);
+z2=ymY(:,labels==2);
+z3=ymY(:,labels==3);
+z4=ymY(:,labels==4);
+keyboard;
 
 %% plot data
-% for i=1:size(ym,2)
-%     figure(1);
-%     plot(ym(:,i),'r');
-%     hold on;
-% %     plot(real(ymF(:,i)),'k');
-%     plot(ymR(:,i),'b');
-%     plot(ymH(:,i),'g');
-%     fprintf('i=%d,label=%d\n',i,labels(i));
-%     hold off;
-%     pause;
-% end
+for i=1:size(ym,2)
+    figure(1);
+    plot(ym(:,i),'r');
+    hold on;
+    plot(real(ymF(:,i)),'k');
+    plot(ymR(:,i),'b');
+    plot(ymH(:,i),'g');
+    fprintf('i=%d,label=%d\n',i,labels(i));
+    hold off;
+    pause;
+end
 
 % ym=ymH;
 fprintf('data acquired\n');
