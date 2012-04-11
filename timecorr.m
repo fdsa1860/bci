@@ -9,9 +9,9 @@ numLabels=numel(unique(labels));
 % htlsn_order = 10;
 % ym = denoise(ym,true,bandwidth,false,htlsn_order);
 
-load bcidata_lowpass_35Hz;
-load bcidata_lowpass_35Hz_SRPCA_7_100000;
-load bcidata_lowpass_35Hz_SRPCA_7_100000_HSTLN_10;
+% load bcidata_lowpass_35Hz;
+% load bcidata_lowpass_35Hz_SRPCA_7_100000;
+% load bcidata_lowpass_35Hz_SRPCA_7_100000_HSTLN_10;
 
 FILTER_EN=0;
 
