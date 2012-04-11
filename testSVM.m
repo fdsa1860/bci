@@ -1,7 +1,8 @@
 %% test SVM
 clc;clear;close all;
 %% Read data
-[ym,labels,data]=read_binary_data();   % read data and labels
+% [ym,labels,data]=read_binary_data();   % read data and labels
+load dataY;
 numLabels=numel(unique(labels));
 
 % FILTER_EN=1;    %enable or disable low pass filter
