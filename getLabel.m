@@ -38,11 +38,11 @@ end
 %% seperate data due to dynamic switch
 norm_used=2;
 % epsilon=7;
-order=20;
+order=10;
 % for i=1:20
-    for epsilon=900000
+    for epsilon=900
         fprintf('order=%d\n',order);
-        [p_est group]=indep_dyn_switch_detect(ym(1:100),norm_used,epsilon,order);
+        [p_est group]=indep_dyn_switch_detect(ymF,norm_used,epsilon,order);
 %         [p_est
 %         group]=indep_dyn_switch_detect(mean(yms(:,1+3*65:65+3*65),2),norm_used,epsilon,order);
         %      [x group]=indep_dyn_switch_detect1(data(16662:16662+1000,2),norm_used,epsilon,order);
